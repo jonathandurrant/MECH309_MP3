@@ -1,9 +1,0 @@
-function [x_grid,y_grid,T_dist] = heatgen_steady(x_nodes,y_nodes, h)
-%UNTITLED Summary of this function goes here
-%   Detailed explanation goes here
-x_grid = x_nodes;
-y_grid = y_nodes;
-T_dist = LU(x_nodes,y_nodes);
-
-end
-

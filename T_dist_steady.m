@@ -27,7 +27,7 @@ A = zeros(x_elem * y_elem);
 g = @(x) 1.05 * x * (1-x);
 for index = 1:x_elem  
     A(index,index) = 1;
-    b(index,1) = T_inf + g(delta_x * (index-1)) * (T_b - T_inf);
+    b(index,1) = T_inf + g(delta_x * (index-1) * 100) * (T_b - T_inf);
 end
  row_counter = index+1;
 
