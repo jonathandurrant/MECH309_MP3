@@ -18,7 +18,7 @@ clc
 
 % Create empty matrices for each grid-size
 
-x_elem = [6,16,49,61];
+x_elem = [6,16,46,61];
 y_elem = [11,31,91,121];
 
 % Temperature distributions 
