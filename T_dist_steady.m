@@ -120,7 +120,13 @@ size(A)
 size(b)
 
 % solutions 
-T_map = A\b;  % FIXME - switch with LU factorization 
+%[L,U] = lu(T);
+%y=L\b;
+%T_map=U\y;
+
+[L,U] = LU_factorization (T);
+y = ForwardSub (L,b);
+T_map = BackwardSub(U,y);
 
 
 for row = 1:y_elem
