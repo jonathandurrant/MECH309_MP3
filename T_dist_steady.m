@@ -119,16 +119,21 @@ t_elapse = toc;
 size(A)
 size(b)
 
-% solutions 
+%% Proven solution 
 %[L,U] = lu(T);
+%size (L)
+%size(b)
 %y=L\b;
-%T_map=U\y;
+%size(U)
+%size(y)
+%T_map= U\y;
 
+%% Troubleshoot Solution
 [L,U] = LU_factorization (T);
 y = ForwardSub (L,b);
 T_map = BackwardSub(U,y);
 
-
+%%
 for row = 1:y_elem
     for col = 1:x_elem
         index = x_elem * (row-1) + col;
