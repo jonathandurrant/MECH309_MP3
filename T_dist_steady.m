@@ -129,6 +129,7 @@ size(b)
 %T_map= U\y;
 
 %% Troubleshoot Solution
+%[L,U] = LU_pivot (T),
 [L,U] = LU_factorization (T);
 y = ForwardSub (L,b);
 T_map = BackwardSub(U,y);
