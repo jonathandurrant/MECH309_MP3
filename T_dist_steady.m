@@ -8,10 +8,10 @@ function [T,b,t_elapse] = T_dist_steady(x_elem,y_elem)
 tic 
 
 % Constants
-delta_x = 0.01/(x_elem-1); % in m
-delta_y = 0.02/(y_elem-1); % in m
-k_a = 380.42; % W/(m.K)
-h_a = 10; % W/(m^2.K) 
+delta_x = 1 /(x_elem - 1); % in cm
+delta_y = 2 /(y_elem - 1); % in cm
+k_a = 380.42 / 100; % W/(m.K) * 1m/100cm
+h_a = 10 / (100)^2; % W/(m^2.K) 
 T_inf = 370; % Kelvin
 C = k_a / h_a;      % m
 T_b = 420;      % Kelvin
@@ -27,14 +27,14 @@ A = zeros(x_elem * y_elem);
 g = @(x) 1.05 * x * (1-x);
 for index = 1:x_elem  
     A(index,index) = 1;
-    b(index,1) = T_inf + g(delta_x * (index-1) * 100) * (T_b - T_inf);
+    b(index,1) = T_inf + g(delta_x * (index-1)) * (T_b - T_inf)
 end
  row_counter = index+1;
 
 %% middle nodes 
 
 %iterate row by row
-for j = 2:(y_elem - 1) % pull out each interior row (starting at bottom)
+for j = 2:(y_elem - 1) % pull out each interior row (starting at 2nd bottom)
     for i = 2: (x_elem - 1) % pull out each node in the row
         
         % Create indices
@@ -58,11 +58,10 @@ end
         
 %% Right nodes 
 
-for index = (x_elem * 2): x_elem:( x_elem * (y_elem))
+for index = (x_elem * 2): x_elem:( x_elem * (y_elem -1))
     % Create indices
     left_i = index - 1;
         
-    
     % Update values ---------
     % coefficients
     
@@ -81,8 +80,8 @@ for index = (x_elem + 1): x_elem:( x_elem * (y_elem-2)+1)
     
     % Update values ---------
     % coefficients
-    A(row_counter,right_i) =  C / delta_x;  
-    A(row_counter,index) =  1 + ( C /delta_x );
+    A(row_counter,right_i) =  - C / delta_x;  
+    A(row_counter,index) =  1 - ( C /delta_x );
     % RHS values
     b(row_counter, 1) =  T_inf;
     
@@ -92,10 +91,9 @@ end
 
 %% Top nodes
 
-for index = (x_elem * (y_elem - 1) + 2) : (x_elem * y_elem)
+for index = (x_elem * (y_elem - 1) + 1) : (x_elem * y_elem)
     % Create indices
     lower_i = index - x_elem;
-    left_i = index - 1;
     
     % Update values ---------
     % coefficients
@@ -122,13 +120,15 @@ size(b)
 %y=L\b;
 %size(U)
 %size(y)
-%T_map= U\y;
+% T_map= U\y;
+
+T_map=T\b;
 
 %% Troubleshoot Solution
 %[L,U] = LU_pivot (T),
-[L,U] = LU_factorization (T);
-y = ForwardSub (L,b);
-T_map = BackwardSub(U,y);
+%[L,U] = LU_factorization (T);
+% y = ForwardSub (L,b);
+% T_map = BackwardSub(U,y);
 
 %%
 for row = 1:y_elem
