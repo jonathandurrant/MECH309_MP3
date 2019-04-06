@@ -8,12 +8,12 @@ function [T,b,t_elapse] = T_dist_steady(x_elem,y_elem)
 tic 
 
 % Constants
-delta_x = 1 /(x_elem - 1); % in cm
-delta_y = 2 /(y_elem - 1); % in cm
+delta_x = 1 /(x_elem - 1); % in m
+delta_y = 2 /(y_elem - 1); % in m
 k_a = 380.42; % W/(m.K) 
 h_a = 10; % W/(m^2.K) 
 T_inf = 370; % Kelvin
-C = (k_a / h_a) / 100;      % cm
+C = k_a / h_a;      % m
 T_b = 420;      % Kelvin
 
 % create A matrix 
@@ -24,7 +24,7 @@ A = zeros(x_elem * y_elem);
 %% Bottom nodes fill the first x_elem rows
 
 % g function (x input in meters)
-g = @(x) 1.05 * x * (1- x);
+g = @(x) 1.05 *  x * (1- (100*x));
 for index = 1:x_elem  
     A(index,index) = 1;
     b(index,1) = T_inf + g(delta_x * (index-1)) * (T_b - T_inf)
@@ -80,8 +80,8 @@ for index = (x_elem + 1): x_elem:( x_elem * (y_elem-2)+1)
     
     % Update values ---------
     % coefficients
-    A(row_counter,right_i) = - C / delta_x;  
-    A(row_counter,index) =  1 + ( C /delta_x );
+    A(row_counter,right_i) =   C / delta_x;  
+    A(row_counter,index) =  1 - ( C /delta_x );
     % RHS values
     b(row_counter, 1) =  T_inf;
     
@@ -97,8 +97,8 @@ for index = (x_elem * (y_elem - 1) + 1) : (x_elem * y_elem)
     
     % Update values ---------
     % coefficients
-    A(row_counter,lower_i) =   - C / delta_y; 
-    A(row_counter,index) =  1 + ( C/delta_y );
+    A(row_counter,lower_i) =   C / delta_y; 
+    A(row_counter,index) =  1 - ( C/delta_y );
     % RHS values
     b(row_counter, 1) =  T_inf;
     
@@ -122,13 +122,13 @@ size(b)
 %size(y)
 % T_map= U\y;
 
- % T_map=T\b;
+T_map=T\b;
 
 %% Troubleshoot Solution
-
-[L,U,b_mod] = LU_fact(T,b);
-y = ForwardSub (L,b_mod);
-T_map = BackwardSub(U,y);
+%[L,U] = LU_pivot (T),
+%[L,U] = LU_factorization (T);
+% y = ForwardSub (L,b);
+% T_map = BackwardSub(U,y);
 
 %%
 for row = 1:y_elem

@@ -45,11 +45,11 @@ for j = 2:(y_elem - 1) % pull out each interior row (starting at 2nd bottom)
         upper_i = index + x_elem;
         
         % Update coefficint values (b = 0 for all) ----------------
-        A(row_counter,index) = - 2 * ( (1/delta_x)^2 + (1/delta_y)^2 );
-        A(row_counter,left_i) =  (1/delta_x)^2;
-        A(row_counter,right_i) = (1/delta_x)^2;
-        A(row_counter,lower_i) =  (1/delta_y)^2;
-        A(row_counter,upper_i) =   (1/delta_y)^2;
+        A(index,index) = - 2 * ( (1/delta_x)^2 + (1/delta_y)^2 );
+        A(index,left_i) =  (1/delta_x)^2;
+        A(index,right_i) = (1/delta_x)^2;
+        A(index,lower_i) =  (1/delta_y)^2;
+        A(index,upper_i) =   (1/delta_y)^2;
         % ----------------------------------------
         
         row_counter = row_counter + 1;   
@@ -65,10 +65,10 @@ for index = (x_elem * 2): x_elem:( x_elem * (y_elem -1))
     % Update values ---------
     % coefficients
     
-    A(row_counter,left_i) = - C / delta_x; 
-    A(row_counter,index) =  1 + ( C / delta_x );
+    A(index,left_i) = - C / delta_x; 
+    A(index,index) =  1 + ( C / delta_x );
     % RHS values
-    b(row_counter, 1) =  T_inf;
+    b(index, 1) =  T_inf;
     
     % -----------------------
     row_counter = row_counter + 1;
@@ -80,10 +80,10 @@ for index = (x_elem + 1): x_elem:( x_elem * (y_elem-2)+1)
     
     % Update values ---------
     % coefficients
-    A(row_counter,right_i) = - C / delta_x;  
-    A(row_counter,index) =  1 + ( C /delta_x );
+    A(index,right_i) = - C / delta_x;  
+    A(index,index) =  1 + ( C /delta_x );
     % RHS values
-    b(row_counter, 1) =  T_inf;
+    b(index, 1) =  T_inf;
     
     % -----------------------
     row_counter = row_counter + 1;
@@ -97,10 +97,10 @@ for index = (x_elem * (y_elem - 1) + 1) : (x_elem * y_elem)
     
     % Update values ---------
     % coefficients
-    A(row_counter,lower_i) =   - C / delta_y; 
-    A(row_counter,index) =  1 + ( C/delta_y );
+    A(index,lower_i) =   - C / delta_y; 
+    A(index,index) =  1 + ( C/delta_y );
     % RHS values
-    b(row_counter, 1) =  T_inf;
+    b(index, 1) =  T_inf;
     
     % -----------------------
     row_counter = row_counter + 1;
@@ -108,10 +108,10 @@ end
 
 %% Assign variables 
 T = A;
-t_elapse = toc;
 
-size(A)
-size(b)
+
+size(A);
+size(b);
 
 %% Proven solution 
 %[L,U] = lu(T);
@@ -130,6 +130,7 @@ size(b)
 y = ForwardSub (L,b_mod);
 T_map = BackwardSub(U,y);
 
+t_elapse = toc;
 %%
 for row = 1:y_elem
     for col = 1:x_elem
