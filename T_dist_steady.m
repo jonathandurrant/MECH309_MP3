@@ -102,9 +102,8 @@ for index = (x_elem * (y_elem - 1) + 2) : (x_elem * y_elem)
     
     % Update values ---------
     % coefficients
-    A(row_counter,lower_i) =  - k_a / ( h_a* delta_y); 
-    A(row_counter,left_i) =  - k_a / ( h_a* delta_x); 
-    A(row_counter,index) =  1 +  C * ( 1/(delta_x) + 1/(delta_y) );
+    A(row_counter,lower_i) =  C / delta_y; 
+    A(row_counter,index) =  1 - ( C/delta_y );
     % RHS values
     b(row_counter, 1) =  T_inf;
     
