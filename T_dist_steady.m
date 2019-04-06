@@ -61,7 +61,6 @@ end
 for index = (x_elem * 2): x_elem:( x_elem * (y_elem))
     % Create indices
     left_i = index - 1;
-    lower_i = index - x_elem;
         
     
     % Update values ---------
@@ -79,13 +78,11 @@ end
 for index = (x_elem + 1): x_elem:( x_elem * (y_elem-2)+1)
     % Create indices
     right_i = index + 1;
-    upper_i = index + x_elem;
     
     % Update values ---------
     % coefficients
-    A(row_counter,right_i) =  - k_a / ( h_a* delta_x);  
-    A(row_counter, upper_i) = - k_a / ( h_a* delta_y); 
-    A(row_counter,index) =  1 + C * ( 1/(delta_x) + 1/(delta_y) );
+    A(row_counter,right_i) =  C / delta_x;  
+    A(row_counter,index) =  1 + ( C /delta_x );
     % RHS values
     b(row_counter, 1) =  T_inf;
     
