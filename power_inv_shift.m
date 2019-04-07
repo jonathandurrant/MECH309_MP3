@@ -1,4 +1,4 @@
-function [eigval_shift,eigvect_shift] = power_inv_shift(A,x,mu,stopcrit)
+function [eigval_shift,eigvect_shift] = power_inv_shift(A,x,mu,epsilon);
 
 diff = 1;
 
@@ -10,7 +10,7 @@ n = size (A);
 I = eye (n);
 B = A - mu*I;
 
-while diff > 10^(-6)
+while diff > epsilon
     eigval_shift1 = transpose(y)*A*y;
     z = B\y;
     y = ((norm(z))^(-1))*z;
