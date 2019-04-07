@@ -1,7 +1,5 @@
 function [D,P] = deflation(A, lambda1, v1, epsilon);
 
-
-
 % Initialize
 B1 = A;
 u1 = v1;
