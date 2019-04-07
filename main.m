@@ -33,11 +33,12 @@ num_elem = [6*11];%, 16*31 46*91]; % 61*121];
 plot(num_elem, t_elapse);
 
 %% Trnsient Analysis - CASE 2
-% Need to formulate problem st T_dot = CT + r
+% Need to formulate problem s.t. T_dot = CT + r
 % Then C = PDinv(P)
 % Finally T(t) = P exp.....
 
-
+% Find D and P for a 3x5 grid
+C = A1;
 epsilon = 10^(-7);
 n = size(C,1);
 x = randi(5,n,1);
@@ -45,8 +46,7 @@ epsilon = (10^(-12));
 [lambda1, v1, mu] = power_method(C, x, epsilon);
 [D,P] = deflation(C, lambda1, v1, epsilon);
 
-
-ED = matexp (D*t);
+ED = matexp (t.*D);
 T(t) = P*ED*inv(P)*(T_0+inv(C)*r)-inv(C)*r;
 
 
