@@ -29,7 +29,6 @@ for i = 1:(n-1)
     P(:,i+1) = v2; % Populate eigenvector matrix
     
     i = i+1;
-
 end
 D
 P

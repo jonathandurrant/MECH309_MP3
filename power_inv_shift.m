@@ -10,13 +10,16 @@ n = size (A);
 I = eye (n);
 B = A - mu*I;
 
-while diff > epsilon
+%maxiter = 10^9;
+%iter = 0;
+
+while diff > epsilon %&& iter <  maxiter
     eigval_shift1 = transpose(y)*A*y;
     z = B\y;
     y = ((norm(z))^(-1))*z;
     eigval_shift2 = transpose(y)*A*y;
     diff = abs(eigval_shift2 - eigval_shift1);
-    
+    %iter = iter +1;
 end
 
 eigval_shift = eigval_shift2;
