@@ -10,6 +10,19 @@ clc
 % format short
 % format long
 
+% global variables 
+global T_b rho C_p k_a h_a T_inf C K
+
+
+T_b = 420;      % Kelvin
+rho = 8960;     %kg/m^3
+C_p = 0.39;     % Kj/kg.K
+k_a = 380.42; % W/(m.K) 
+h_a = 6; % W/(m^2.K) 
+T_inf = 370; % Kelvin
+C = (k_a / h_a) / 100;      % cm
+K = (k_a / ( rho * C_p)) * (100^2 / 1000);   % cm^2/s
+
 %% Finite difference approximations 
 
 
