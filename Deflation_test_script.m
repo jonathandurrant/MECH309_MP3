@@ -1,10 +1,7 @@
 
 % Preliminary
-% C = randi(10,3,3);
-C =[2 1 1; 1 4 2; 1 1 2];
-%n = size(A,1);
-%x = randi(5,n,1);
-
+C = randi(2,6,6);
+% C =[2 1 1; 1 4 2; 1 1 2];
 
 [P,D] = deflation_new (C);
 
