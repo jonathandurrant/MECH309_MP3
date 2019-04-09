@@ -45,6 +45,33 @@ t_elapse;
 num_elem = [6*11];%, 16*31 46*91]; % 61*121];
 plot(num_elem, t_elapse);
 
+%% Transient case 1
+
+%assign time step and grid 
+h = 10^-4;  %sec
+x = 16;
+y = 31;
+t_stop = 1; % sec
+
+% initialize A matrix and produce L and U Matrices for xXy grid
+tic 
+[L,U,b] = transient_1_init(x,y);
+%Solve for t=0 
+T_map_init(1:x*y,1) = 370; % Initialize T of each node to T_inf
+% add bottom boundary initial conditions
+T_map_init(1:x, 1) = b(1:x,1);
+T_i = T_map_init;
+T_plot(0,T_i,x,y)
+
+% iterate over time
+for i = h:h:t_stop
+    [T_i,t_elapse] = T_dist_transient_1(T_i,i,x,y,h,L,U,b);
+end 
+toc 
+T_i
+num_elem = [6*11];%, 16*31 46*91]; % 61*121];
+plot(num_elem, t_elapse);
+
 %% Trnsient Analysis - CASE 2
 % Need to formulate problem s.t. T_dot = CT + r
 % Then C = PDinv(P)
