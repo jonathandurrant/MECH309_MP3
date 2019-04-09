@@ -16,7 +16,7 @@ B = C - mu*I;
 while diff > epsilon %&& iter <  maxiter
     eigval_shift1 = transpose(y)*C*y;
     z = B\y;
-    y = ((norm(z))^(-1))*z;
+    y = (norm(z))\z;
     eigval_shift2 = transpose(y)*C*y;
     diff = abs(eigval_shift2 - eigval_shift1);
     %iter = iter +1;
