@@ -1,4 +1,4 @@
-function [P,D] = deflation_new (C)
+function [P,D] = deflation_new(C)
 
 %% Preliminary
 epsilon = 10E-10;   %Stopping criteria
@@ -22,9 +22,11 @@ D(1,1) = lambda1;
 %% Deflation loop
 for i = 1:(n-1)
     B2 = B1 - lambda1 * u1 * transpose(u1);
-    [lambda2, u2, mu] = power_method (B2, u1, epsilon);  %u2 not exactly equal to v2, must use Inverse Power w/ Shift
+    [lambda2, u2, mu] = power_method (B2, u1, epsilon); 
+    sprintf("Power method %e",i);
+    %u2 not exactly equal to v2, must use Inverse Power w/ Shift
     [lambda2pr, v2] = power_inv_shift (C, u2, mu, epsilon); %new value of lambda might be different, must verify
-    
+    sprintf("Inverse power method %e",i);
 %     if abs(lambda2pr - lambda2)>10^(-7)
 %         disp ('Error. Choose smaller epsilon');
 %         break  
