@@ -1,7 +1,7 @@
 function [P,D] = deflation_new(C)
 
 %% Preliminary
-epsilon = 10E-10;   %Stopping criteria
+epsilon = 10E-8;   %Stopping criteria
 n = size(C,1);
 x = randi(5,n,1);   % Arbitrary input vector
 
@@ -27,10 +27,11 @@ for i = 1:(n-1)
     %u2 not exactly equal to v2, must use Inverse Power w/ Shift
     [lambda2pr, v2] = power_inv_shift (C, u2, mu, epsilon); %new value of lambda might be different, must verify
     sprintf("Inverse power method %e",i);
-%     if abs(lambda2pr - lambda2)>10^(-7)
-%         disp ('Error. Choose smaller epsilon');
-%         break  
-%     end
+    
+    if abs(lambda2pr - lambda2)>10^(-1)
+        disp ('Error. Choose smaller epsilon');
+        break  
+    end
     
     B1 = B2;
     u1 = v2;
