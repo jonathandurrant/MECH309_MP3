@@ -34,7 +34,7 @@ for i = 1:(n-1)
     end
     
     B1 = B2;
-    u1 = v2;
+    u1 = u2;
     lambda1 = lambda2;
     
     D(i+1,i+1) = lambda2; % Populate diagonal of D
