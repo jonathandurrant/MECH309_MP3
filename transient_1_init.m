@@ -1,4 +1,4 @@
-function [L,U,b] = transient_1_init(x_elem,y_elem)
+    function [L,U,b] = transient_1_init(x_elem,y_elem)
 %TRANSIENT_1_INIT Summary of this function goes here
 %   Detailed explanation goes here
 

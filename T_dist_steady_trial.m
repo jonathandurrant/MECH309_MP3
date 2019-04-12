@@ -1,4 +1,4 @@
-function [T,b,t_elapse] = T_dist_steady(x_elem,y_elem)
+function [y,T_x0, T,b,t_elapse] = T_dist_steady(x_elem,y_elem)
 %T_DIST_STEADY Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -8,13 +8,10 @@ function [T,b,t_elapse] = T_dist_steady(x_elem,y_elem)
 tic 
 
 % Constants
+global T_b rho C_p k_a h_a T_inf C K cc
+
 delta_x = 1 /(x_elem - 1); % in cm
 delta_y = 2 /(y_elem - 1); % in cm
-k_a = 380.42; % W/(m.K) 
-h_a = 10; % W/(m^2.K) 
-T_inf = 370; % Kelvin
-C = (k_a / h_a) / 100;      % cm
-T_b = 420;      % Kelvin
 
 % create A matrix 
 A = zeros(x_elem * y_elem);
@@ -27,7 +24,7 @@ A = zeros(x_elem * y_elem);
 g = @(x) 1.05 * x * (1- x);
 for index = 1:x_elem  
     A(index,index) = 1;
-    b(index,1) = T_inf + g(delta_x * (index-1)) * (T_b - T_inf)
+    b(index,1) = T_inf + g(delta_x * (index-1)) * (T_b - T_inf);
 end
  row_counter = index+1;
 
@@ -108,10 +105,7 @@ end
 
 %% Assign variables 
 T = A;
-
-
-size(A);
-size(b);
+sprintf('A and b matrices made(%d)', cc+1')
 
 %% Proven solution 
 %[L,U] = lu(T);
@@ -126,21 +120,34 @@ size(b);
 
 %% Troubleshoot Solution
 
-[L,U,b_mod] = LU_fact(T,b);
-y = ForwardSub (L,b_mod);
+%[L,U] = LU_fact(T);
+[L,U] = LU(T);
+sprintf('L and U made (%d)', cc+1) 
+y = ForwardSub (L,b);
+sprintf('foward sub done (%d)', cc+1')
 T_map = BackwardSub(U,y);
-
+sprintf('backward sub done (%d)', cc+1')
 t_elapse = toc;
+T = T_map;
 %%
+%{
 for row = 1:y_elem
     for col = 1:x_elem
         index = x_elem * (row-1) + col;
         soln((y_elem-row+1),col) = T_map(index);
     end 
 end 
+%}
 
-h = heatmap(soln);
-h.Colormap = jet;
+T_plot(cc,T_map,x_elem,y_elem)
+
+cc = cc+1;
+
+r = 1;
+y = [0:delta_y:2];
+for i = 1:x_elem:(x_elem*(y_elem - 1)+ 1)
+T_x0(r) = T(i);
+r = r+1;
 
 end
 
