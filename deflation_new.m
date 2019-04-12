@@ -1,7 +1,7 @@
 function [P,D] = deflation_new(C)
 
 %% Preliminary
-epsilon = 10E-6;   %Stopping criteria
+epsilon = 10E-8;   %Stopping criteria
 n = size(C,1);
 x = randi(5,n,1);   % Arbitrary input vector
 
