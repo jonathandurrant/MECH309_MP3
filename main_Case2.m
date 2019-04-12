@@ -1,6 +1,9 @@
+
 close all
 clear all
 clc
+
+clocktimer = tic; 
 
 % Constants
 T_b = 420;                   % [Kelvin]
@@ -46,16 +49,36 @@ C (3,1) = 0;
 C (3,2) = (alpha/delta^2);
 C (3,3) = alpha/delta^2 *(3/(1 + delta_hk)-4);
 
-r (1,1) = (alpha/delta^2)*((2*delta_hk*370/(1+delta_hk))+T2);
-r (2,1) = (alpha/delta^2)*((2*delta_hk*370/(1+delta_hk)));
-r (3,1) = (alpha/delta^2)*(3*delta_hk/(1+delta_hk))*370;
+r (1,1) = (alpha/delta^2)*((2*delta_hk*T_inf/(1+delta_hk))+T2);
+r (2,1) = (alpha/delta^2)*((2*delta_hk*T_inf/(1+delta_hk)));
+r (3,1) = (alpha/delta^2)*(3*delta_hk/(1+delta_hk))*T_inf;
 
 % Utilize deflation method to obtain P and D
 [P,D] = deflation(C)
 eig(C)                  % Verification with matlab function
 
-% Find solution for every time step over 
-
-t = 2;
+% Find solution for given time step  
+t = 0.9;
 exp_Dt = matexp (t.*D);
+
 T_t_int = P * exp_Dt * inv(P) * (T_0+inv(C)*r) - inv(C) * r
+T_t_14 = T_t_int(3,1)/(1+delta_hk)+T_inf/(1+k_a/h_a/delta)
+
+T_dist = zeros (5,3);
+
+T_t_5 = T_t_int (1,1);
+T_t_8 = T_t_int (2,1);
+T_t_11 = T_t_int (3,1);
+
+T_t_bot1 = T_nodesbot(1);
+T_t_bot2 = T_nodesbot(2);
+T_t_bot3 = T_nodesbot(3);
+
+expr = (1/(delta_hk+1)) + T_inf/(1+delta_hk);
+
+T_t_4 = expr * T_t_int (1,1);
+
+
+
+toc(clocktimer)
+
