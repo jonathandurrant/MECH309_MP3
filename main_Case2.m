@@ -68,25 +68,3 @@ eig(C)
 t = 2;
 exp_Dt = matexp (t.*D);
 T_t_int = P * exp_Dt * inv(P) * (T_0+inv(C)*r) - inv(C) * r
-% 
-%  
-% T_t_L =
-% T_t_R = 1/(deltahk+1) * T_t_int + T_inf/(1+deltahk);
-% T_t_Topmid = 1/(deltahk+1) * T_t_int
-% 
-% for t = 0:(10^-4):4
-%     exp_Dt = matexp (D.*t);
-%     T_t_int = P * exp_Dt * inv(P) * (T_0+inv(C)*r) - inv(C) * r;
-%     
-% %     T_t_T = 
-% %     T_t_L =
-% %     T_t_R =
-% %     T_t_topmid = 
-%     
-%     i = i+1;
-% end
-% 
-% plot (t,T_t_int(1,1))
-% 
-% 
-% 
