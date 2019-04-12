@@ -1,18 +1,12 @@
-function x = BackwardSub(U,b)
-% this function is used to solve a system of linear eqs. ax=b
-% where U is the upper triangular matrix
+function x = BackwardSub(U,y)
+% This function is used to solve a system of linear equations Ux=b
+% U is the upper triangular matrix obtained by LU Factorization
+% y is obtained beforehand with the FowardSub algorithm 
+% x is the output x column matrix, solution to Ax=b
 
-% Input variables
-% U whihc is found from LU_factorization
-% b which is the in put given from the y column vector which is obtained
-% from ForwardSub
+n = length(y);
 
-% Output x column matrix
-
-n = length(b);
-
-x(n,1) = b(n)/U(n,n);
+x(n,1) = y(n)/U(n,n);
 for  i = n-1:-1:1
-    x(i,1) = ( b(i)-U(i,i+1:n)*x(i+1:n,1))./U(i,i);
-
+    x(i,1) = ( y(i)-U(i,i+1:n)*x(i+1:n,1))./U(i,i);
 end

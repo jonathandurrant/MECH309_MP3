@@ -9,12 +9,13 @@ C_p = 0.39;                  % [Kj/kg.K]
 k_a = 380.42;                % [W/(m.K)]
 h_a = 6;                     % [W/(m^2.K)] 
 T_inf = 370;                 % [Kelvin]
-alpha = k_a/(C_p * rho);     
+alpha = k_a/(C_p * rho);     % [m^2/s]
 
-% Size of grid
+% Size of grid 
 width = 3;
 height = 5;
 delta = 1/(width-1);      %[m]
+delta_hk = h_a*delta/k_a;
 
 % Number of interior nodes
 int_nodes = width*height - 2*width - 2*(height-2);
@@ -32,36 +33,26 @@ x_bot = linspace(0,1,width);
 T_nodesbot = T_bot(x_bot);
 T2 = T_nodesbot(2);
 
-% Components
-deltahk = h_a*delta/k_a;
-
-F = alpha/(delta^2);
-H = F * (3/(1+deltahk)-4);
-
-
-G = F * (T_inf/(1+(deltahk^-1)));
-K = F * (-4 + (3*T_inf)/(deltahk+1));
-
 % Populate matrices
-C (1,1) = alpha/delta^2 *(2/(1 + deltahk)-4);
+C (1,1) = alpha/delta^2 *(2/(1 + delta_hk)-4);
 C (1,2) = (alpha/delta^2);
 C (1,3) = 0;
 
 C (2,1) = (alpha/delta^2);
-C (2,2) = alpha/delta^2 *(2/(1 + deltahk)-4);
+C (2,2) = alpha/delta^2 *(2/(1 + delta_hk)-4);
 C (2,3) = (alpha/delta^2);
 
 C (3,1) = 0;
 C (3,2) = (alpha/delta^2);
-C (3,3) = alpha/delta^2 *(3/(1 + deltahk)-4);
+C (3,3) = alpha/delta^2 *(3/(1 + delta_hk)-4);
 
-r (1,1) = (alpha/delta^2)*((2*deltahk*370/(1+deltahk))+T2);
-r (2,1) = (alpha/delta^2)*((2*deltahk*370/(1+deltahk)));
-r (3,1) = (alpha/delta^2)*(3*deltahk/(1+deltahk))*370;
+r (1,1) = (alpha/delta^2)*((2*delta_hk*370/(1+delta_hk))+T2);
+r (2,1) = (alpha/delta^2)*((2*delta_hk*370/(1+delta_hk)));
+r (3,1) = (alpha/delta^2)*(3*delta_hk/(1+delta_hk))*370;
 
 % Utilize deflation method to obtain P and D
-[P,D] = deflation_new(C)
-eig(C)
+[P,D] = deflation(C)
+eig(C)                  % Verification with matlab function
 
 % Find solution for every time step over 
 
