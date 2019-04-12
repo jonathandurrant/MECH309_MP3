@@ -74,11 +74,5 @@ T_t_bot1 = T_nodesbot(1);
 T_t_bot2 = T_nodesbot(2);
 T_t_bot3 = T_nodesbot(3);
 
-expr = (1/(delta_hk+1)) + T_inf/(1+delta_hk);
-
-T_t_4 = expr * T_t_int (1,1);
-
-
-
 toc(clocktimer)
 
