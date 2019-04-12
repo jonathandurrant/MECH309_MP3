@@ -60,7 +60,7 @@ r (2,1) = (alpha/delta^2)*((2*deltahk*370/(1+deltahk)));
 r (3,1) = (alpha/delta^2)*(3*deltahk/(1+deltahk))*370;
 
 % Utilize deflation method to obtain P and D
-[P,D] = deflation_new(C)
+[P,D] = deflation(C)
 eig(C)
 
 % Find solution for every time step over 
