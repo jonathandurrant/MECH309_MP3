@@ -11,7 +11,7 @@ clc
 % format long
 
 % global variables 
-global T_b rho C_p k_a h_a T_inf C K
+global T_b rho C_p k_a h_a T_inf C K cc
 
 
 T_b = 420;      % Kelvin
@@ -22,6 +22,7 @@ h_a = 6; % W/(m^2.K)
 T_inf = 370; % Kelvin
 C = (k_a / h_a) / 100;      % cm
 K = (k_a / ( rho * C_p)) * (100^2 / 1000);   % cm^2/s
+cc=0;   % to track case for plots
 
 %% Finite difference approximations 
 
@@ -36,17 +37,30 @@ y_elem = [11,31,91,121];
 
 % Temperature distributions 
 
-[A1, b1, t_elapse(1)] = T_dist_steady_trial(x_elem(1),y_elem(1));
-%[A2, b2, t_elapse(2)] = T_dist_steady_trial(x_elem(2),y_elem(2));
-%[A3, b3, t_elapse(3)] = T_dist_steady_trial(x_elem(3),y_elem(3));
-%[A4, b4, t_elapse(4)] = T_dist_steady_trial(x_elem(4),y_elem(4));
+[y_1,T_x0_1,T1, b1, t_elapse(1)] = T_dist_steady_trial(x_elem(1),y_elem(1));
+[y_2,T_x0_2,T2, b2, t_elapse(2)] = T_dist_steady_trial(x_elem(2),y_elem(2));
+[y_3,T_x0_3, T3, b3, t_elapse(3)] = T_dist_steady_trial(x_elem(3),y_elem(3));
+[y_4,T_x0_4, T4, b4, t_elapse(4)] = T_dist_steady_trial(x_elem(4),y_elem(4));
 
-t_elapse;
-num_elem = [6*11];%, 16*31 46*91]; % 61*121];
-plot(num_elem, t_elapse);
+% plot x=o and error 
+%plot_x0(y_elem, T1, T2, T3, T4)
+subplot (3,3,7)
+hold on
+plot(y_1,T_x0_1) 
+plot(y_2,T_x0_2)
+plot(y_3,T_x0_3)
+plot(y_4,T_x0_4)
+xlabel('Y-position (cm)');
+ylabel('Temp (K)');
+title('Temp Plot on x=0');
+legend('66 elems', '496 elems', '4186 elems', '7381 elems');
+num_elem = [6*11, 16*31, 46*91,  61*121];
+subplot(3,3,6)
+
 
 %% Transient case 1
 
+%{
 %assign time step and grid 
 h = 10^-4;  %sec
 x = 16;
@@ -85,4 +99,5 @@ plot(num_elem, t_elapse);
 
 
 
+%}
 

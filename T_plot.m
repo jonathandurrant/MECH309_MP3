@@ -12,17 +12,17 @@ end
 
 switch Case
     case 0 
-        subplot(3,3,1)
+        subplot(3,2,1)
     case 1
-        subplot(3,3,2)
+        subplot(3,2,2)
     case 2
-        subplot(3,3,3)
+        subplot(3,2,3)
     case 3
-        subplot(3,3,4)
+        subplot(3,2,4)
     case 4
-        subplot(3,3,5)
+        subplot(3,2,5)
     case 5
-        subplot(3,3,6)
+        subplot(3,2,6)
     case 6
         subplot(3,3,7)
     case 7
