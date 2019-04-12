@@ -1,10 +1,6 @@
 function [eigval_shift, eigvect_shift] = power_inv_shift(C,x,mu,epsilon);
 
 diff = 1;
-
-%mu =   FIX ME: later we have to make sure mu=lampda2+epsilon. Like that
-%we automatically get the right/accurate eigenvector v2.
-
 y = x/norm(x);
 n = size (C);
 I = eye (n);
