@@ -4,6 +4,7 @@ clear all
 clc
 
 clocktimer = tic; 
+t = 4;
 
 % Constants
 T_b = 420;                   % [Kelvin]
@@ -49,30 +50,47 @@ C (3,1) = 0;
 C (3,2) = (alpha/delta^2);
 C (3,3) = alpha/delta^2 *(3/(1 + delta_hk)-4);
 
-r (1,1) = (alpha/delta^2)*((2*delta_hk*T_inf/(1+delta_hk))+T2);
-r (2,1) = (alpha/delta^2)*((2*delta_hk*T_inf/(1+delta_hk)));
-r (3,1) = (alpha/delta^2)*(3*delta_hk/(1+delta_hk))*T_inf;
+r (1,1) = (alpha/delta^2)*((T_inf/(1+delta_hk^(-1)))+T2);
+r (2,1) = (alpha/delta^2)*((T_inf/(1+delta_hk^(-1))));
+r (3,1) = (alpha/delta^2)*((T_inf/(1+delta_hk^(-1))))*3;
 
 % Utilize deflation method to obtain P and D
+timer1 = tic;
 [P,D] = deflation(C)
-eig(C)                  % Verification with matlab function
+toc (timer1)
+
+timer2 = tic;
+[Pstrd,Dstrd] = eig(C)                  % Verification with matlab function
+toc (timer2)
 
 % Find solution for given time step  
-t = 0.9;
 exp_Dt = matexp (t.*D);
 
-T_t_int = P * exp_Dt * inv(P) * (T_0+inv(C)*r) - inv(C) * r
-T_t_14 = T_t_int(3,1)/(1+delta_hk)+T_inf/(1+k_a/h_a/delta)
+T_int = P * exp_Dt * inv(P) * (T_0+inv(C)*r) - inv(C) * r;
+T_14 = T_int(3,1)/(1+delta_hk)+T_inf/(1+k_a/h_a/delta);
 
 T_dist = zeros (5,3);
 
-T_t_5 = T_t_int (1,1);
-T_t_8 = T_t_int (2,1);
-T_t_11 = T_t_int (3,1);
+% Populate centre nodes
+T_dist (1,2) = T_14;
+T_dist (2,2) = T_int (3,1);
+T_dist (3,2) = T_int (2,1);
+T_dist (4,2) = T_int (1,1);
 
-T_t_bot1 = T_nodesbot(1);
-T_t_bot2 = T_nodesbot(2);
-T_t_bot3 = T_nodesbot(3);
+% Populate bottom nodes
+for i = 1:3
+    T_dist (5,i) = T_nodesbot(i);
+end
 
+% Populate side nodes
+for i = 1:4
+    T_dist(i,1) = T_dist (i,2) * 1/(delta_hk+1) + T_inf /(1+delta_hk^(-1));
+    T_dist (i,3) = T_dist (i,1);
+end
+
+T_dist
 toc(clocktimer)
+
+h = heatmap (T_dist, 'Colorlimits', [370,420]);
+h.Colormap = jet;
 

@@ -39,8 +39,7 @@ for i = 1:(n-1)
     
     i = i+1;
 end
-D
-P
+
 
 end
 
